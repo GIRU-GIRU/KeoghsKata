@@ -16,7 +16,7 @@ namespace KeoghsKata.ViewComponents
         }
 
 
-        public Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             List<BasketModel> basketModels = new();
 
@@ -28,16 +28,16 @@ namespace KeoghsKata.ViewComponents
 
                 if (currentItemsInBasket != null && currentItemsInBasket.Count > 0)
                 {
-                    basketModels = CreatePageModel(currentItemsInBasket);
+                    basketModels = await CreatePageModel(currentItemsInBasket);
                 }
             }
 
-            return Task.FromResult<IViewComponentResult>(View(basketModels));
+            return View(basketModels);
 
         }
 
 
-        private List<BasketModel> CreatePageModel(List<StoreKeepingUnit> storeKeepingUnits)
+        private async Task<List<BasketModel>> CreatePageModel(List<StoreKeepingUnit> storeKeepingUnits)
         {
 
             List<BasketModel> basketModels = new();
@@ -46,11 +46,17 @@ namespace KeoghsKata.ViewComponents
 
             foreach (var item in test)
             {
+                decimal totalPrice = 0m;
+                int promotionCount = 0;
+
+                (totalPrice, promotionCount) = await _basketPromotionSvc.ApplySameProductDiscount(item.First(), item.Count());
+
                 basketModels.Add(new BasketModel()
                 {
                     Quantity = item.Count(),
                     StoreKeepingUnit = item.First(),
-                    TotalPrice = item.First().UnitPrice * item.Count(),
+                    TotalPrice = totalPrice,
+                    PromotionCount = promotionCount,
                 });
             }
 

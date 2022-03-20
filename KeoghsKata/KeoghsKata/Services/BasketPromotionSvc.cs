@@ -12,60 +12,66 @@ namespace KeoghsKata.Services
             _skuSvc = skuSvc;
         }
 
-        private decimal CalculateThreeForFortyDiscount(List<StoreKeepingUnit> storeKeepingUnits)
+        private (decimal, int) CalculateThreeForFortyDiscount(StoreKeepingUnit storeKeepingUnit, int quantity)
         {
-            decimal res = storeKeepingUnits.Select(x => x.UnitPrice).Sum();
+            decimal res = storeKeepingUnit.UnitPrice * quantity;
+            int promotionCount = 0;
 
-            if (storeKeepingUnits.Count > 3)
+
+            if (quantity > 3)
             {
-                res = (storeKeepingUnits.Count / 3) * 40;
-                res += (storeKeepingUnits.Count % 3) * storeKeepingUnits.First().UnitPrice;
+                res = (quantity / 3) * 40;
+                res += (quantity % 3) * storeKeepingUnit.UnitPrice;
+
+                promotionCount = quantity / 3;
+
             }
 
-            return res;
+            return (res, promotionCount);
         }
 
-        private decimal CalculateTwentyFivePrcntOffForEvery2(List<StoreKeepingUnit> storeKeepingUnits)
+        private (decimal, int) CalculateTwentyFivePrcntOffForEvery2(StoreKeepingUnit storeKeepingUnit, int quantity)
         {
-            decimal res = storeKeepingUnits.Select(x => x.UnitPrice).Sum();
+            decimal res = storeKeepingUnit.UnitPrice * quantity;
+            int promotionCount = 0;
 
-            if (storeKeepingUnits.Count > 2)
+            if (quantity > 2)
             {
-                var sku = storeKeepingUnits.First();
-                res = (storeKeepingUnits.Count / 2) * (sku.UnitPrice * 0.75m);
-                res += (storeKeepingUnits.Count % 2) * sku.UnitPrice;
+                res = (quantity / 2) * (storeKeepingUnit.UnitPrice * 0.75m);
+                res += (quantity % 2) * storeKeepingUnit.UnitPrice;
+
+                promotionCount = quantity / 2;
             }
 
-            return res;
+            return (res, promotionCount);
         }
 
 
         ///<inheritdoc/>
-        public async Task<decimal> ApplySameProductDiscount(List<StoreKeepingUnit> storeKeepingUnits)
+        public async Task<(decimal, int)> ApplySameProductDiscount(StoreKeepingUnit storeKeepingUnit, int quantity )
         {
             decimal res = 0m;
+            int promotionCount = 0;
 
-            if (storeKeepingUnits == null || storeKeepingUnits.Count == 0)
+            if (storeKeepingUnit == null)
             {
                 throw new ArgumentException("Invalid store keeping unit collection was provided");
             }
-            if (storeKeepingUnits.Select(x => x.Id).Count() > 1)
-            {
-                throw new ArgumentException("Only a list of products of the same type can be provided");
-            }
-
+   
             //Usually would consider writing a unit test to test against this logic as i build it without a frontend
             //however didn't want take too long adding unit test project and setting all that up with DI etc.
             try
             {
-                res = storeKeepingUnits.Select(x => x.UnitPrice).Sum();
+                res = storeKeepingUnit.UnitPrice * quantity;
 
                 //As the pricing changes frequently we pull from the database every time to ensure we're up to date with our discounts, rather than caching at startup
                 var promotions = await _skuSvc.GetAllPromotions();
 
                 if (promotions != null && promotions.Count() > 0)
                 {
-                    var matchingPromotions = promotions.FirstOrDefault(x => x.StoreKeepingUnitId == storeKeepingUnits.First().Id);
+
+                    //This logic currently only supports only one promotion per unit, a grouping with loop would be required to extend - time constraints
+                    var matchingPromotions = promotions.FirstOrDefault(x => x.StoreKeepingUnitId == storeKeepingUnit.Id);
 
                     if (matchingPromotions != null)
                     {
@@ -75,11 +81,11 @@ namespace KeoghsKata.Services
                                 break;
 
                             case PromotionType.ThreeForForty:
-                                res = CalculateThreeForFortyDiscount(storeKeepingUnits);
+                                (res, promotionCount) = CalculateThreeForFortyDiscount(storeKeepingUnit, quantity);
                                 break;
 
                             case PromotionType.TwentyFivePrcntOffForEvery2:
-                                res = CalculateTwentyFivePrcntOffForEvery2(storeKeepingUnits);
+                                (res, promotionCount) = CalculateTwentyFivePrcntOffForEvery2(storeKeepingUnit, quantity);
                                 break;
 
                             default:
@@ -94,7 +100,7 @@ namespace KeoghsKata.Services
             }
 
 
-            return res;
+            return (res, promotionCount);
         }
 
     }

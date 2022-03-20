@@ -38,7 +38,9 @@ namespace KeoghsKata.Services
             {
                 var db = GetContext();
 
-                res = await db.PromotionStoreKeepingUnits.ToListAsync();
+                res = await db.PromotionStoreKeepingUnits
+                     .Include(x => x.StoreKeepingUnit)
+                         .ToListAsync();
             }
             catch (Exception ex)
             {

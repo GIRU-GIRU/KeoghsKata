@@ -12,8 +12,6 @@ namespace KeoghsKata.Controllers
         private readonly ISKUSvc _skuSvc;
         private readonly ISession _session;
 
-
-
         public CheckoutController(ILogger<CheckoutController> logger, ISKUSvc skuSvc, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
@@ -34,7 +32,7 @@ namespace KeoghsKata.Controllers
             return View(allStoreKeepingUnits);
         }
 
-        public async Task<IActionResult> Test(int Id)
+        public async Task<IActionResult> Add(int Id)
         {
             List<StoreKeepingUnit> allStoreKeepingUnits = await _skuSvc.GetAllProducts();
 

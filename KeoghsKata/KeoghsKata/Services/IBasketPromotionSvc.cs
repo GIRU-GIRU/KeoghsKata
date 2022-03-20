@@ -8,12 +8,12 @@ namespace KeoghsKata.Services
     {
 
         /// <summary>
-        /// Takes a list of same store keeping unit types to calculate product discount
+        /// Takes a store keeping unit type and the quantities and applies a promotion
         /// </summary>
         /// <param name="storeKeepingUnits"></param>
-        /// <returns>a decimal of the new calculated sum total of the list of products</returns>
-        /// <exception cref="ArgumentException"></exception>
-        public Task<decimal> ApplySameProductDiscount(List<StoreKeepingUnit> storeKeepingUnits);
+        /// <param name="quantity"></param>
+        /// <returns>the modified total price of the units with promotion applied as a decimal, and the amount of promotions applied</returns>
+        public Task<(decimal, int)> ApplySameProductDiscount(StoreKeepingUnit storeKeepingUnits, int quantity);
 
     }
 }
