@@ -16,7 +16,7 @@
             @foreach (var sku in Model)
             {
                 <div class="col-md-6 col-lg-4 col-xl-3 pb-3 px-4">
-                    <div class="part-1">
+                    <div>
                         <h3>Product @sku?.ProductName</h3>
 
                         <div class="row">
@@ -26,9 +26,13 @@
                                 Add to cart
                             </button>
                         </div>
-                        
+
                         <div class="row">
-                        <button type="button" class="btn btn-danger">Remove from cart</button>
+                            <button onclick=" location.href='@Url.Action("Remove", "Checkout", new { Id = sku?.Id })' "
+                            type="button"
+                            class="btn btn-danger">
+                                Remove from cart
+                            </button>
                         </div>
 
                     </div>

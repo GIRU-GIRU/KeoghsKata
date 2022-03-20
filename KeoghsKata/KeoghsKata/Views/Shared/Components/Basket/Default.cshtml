@@ -1,34 +1,38 @@
 ﻿@model List<BasketModel>
 
-<h3>Basket</h3>
+<div class="pt-3">
+    <h3>Basket</h3>
+    <hr />
 
-@if (Model != null && Model.Count > 0)
-{
-    <table class="table table-bordered">
-        <thead class="thead-light">
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Promotions Applied</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var basketModel in Model)
-            {
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
-                    <td>@basketModel?.StoreKeepingUnit?.ProductName</td>
-                    <td>@basketModel?.Quantity</td>
-                    <td>£@basketModel?.TotalPrice</td>
-                    <td>@basketModel?.PromotionCount</td>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Promotions Applied</th>
                 </tr>
-            }       
+            </thead>
 
-        </tbody>
-    </table>
-}else
-{
-    <p>Basket is currently empty</p>
-}
+            <tbody>
+
+                @foreach (var basketModel in Model)
+                {
+                    <tr>
+                        <td>@basketModel?.StoreKeepingUnit?.ProductName</td>
+                        <td>@basketModel?.Quantity</td>
+                        <td>£@basketModel?.TotalPrice</td>
+                        <td>@basketModel?.PromotionCount</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Basket is currently empty</p>
+    }
+</div>

@@ -46,17 +46,48 @@ namespace KeoghsKata.Controllers
 
                 if (!string.IsNullOrEmpty(currentBasketStr))
                 {
-                     var currentBasket = JsonConvert.DeserializeObject<List<StoreKeepingUnit>>(currentBasketStr);
+                    var currentBasket = JsonConvert.DeserializeObject<List<StoreKeepingUnit>>(currentBasketStr);
 
-                    if (currentBasket != null) basketItems = currentBasket;      
+                    if (currentBasket != null) basketItems = currentBasket;
                 }
-           
+
 
                 basketItems.Add(itemToAddToBasket);
 
                 _session.SetString("Basket", JsonConvert.SerializeObject(basketItems));
             }
 
+
+            return View("CheckoutPage", allStoreKeepingUnits);
+        }
+
+        public async Task<IActionResult> Remove(int Id)
+        {
+            List<StoreKeepingUnit> allStoreKeepingUnits = await _skuSvc.GetAllProducts();
+
+            var itemToRemoveFromBasket = allStoreKeepingUnits.FirstOrDefault(x => x.Id == Id);
+
+            if (itemToRemoveFromBasket != null)
+            {
+                var currentBasketStr = _session.GetString("Basket");
+
+                if (!string.IsNullOrEmpty(currentBasketStr))
+                {
+                    var currentBasket = JsonConvert.DeserializeObject<List<StoreKeepingUnit>>(currentBasketStr);
+
+                    if (currentBasket != null)
+                    {
+                        var existingItemInBasket = currentBasket.FirstOrDefault(x => x.Id == itemToRemoveFromBasket.Id);
+
+                        if (existingItemInBasket != null)
+                        {
+                            currentBasket.Remove(existingItemInBasket);
+                            _session.SetString("Basket", JsonConvert.SerializeObject(currentBasket));
+                        }
+
+                    }               
+                }
+            }
 
             return View("CheckoutPage", allStoreKeepingUnits);
         }
