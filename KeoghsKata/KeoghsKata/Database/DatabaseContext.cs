@@ -50,12 +50,27 @@ namespace KeoghsKata.Database
                     UnitPrice = 55
                 }
             );
+
+            modelBuilder.Entity<PromotionStoreKeepingUnit>().HasData(
+                new PromotionStoreKeepingUnit()
+                {
+                    Id = 1,
+                    StoreKeepingUnitId = 2,
+                    PromotionType = PromotionType.ThreeForForty,
+                    CreatedUTC = DateTime.UtcNow,
+                },
+                new PromotionStoreKeepingUnit()
+                {
+                    Id = 2,
+                    StoreKeepingUnitId = 4,
+                    PromotionType = PromotionType.TwentyFivePrcntOffForEvery2,
+                    CreatedUTC = DateTime.UtcNow,
+                }
+            );
         }
 
         public DbSet<StoreKeepingUnit> StoreKeepingUnits { get; set; }
-        public DbSet<PromotionStoreKeepingUnit> Promotions { get; set; }
-
-
+        public DbSet<PromotionStoreKeepingUnit> PromotionStoreKeepingUnits { get; set; }
       
     }
 }

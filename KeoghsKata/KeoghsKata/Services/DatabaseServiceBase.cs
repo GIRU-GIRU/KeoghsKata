@@ -3,13 +3,13 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace KeoghsKata.Services
 {
-    public class ServiceBase : IServiceBase
+    public class DatabaseServiceBase : IDatabaseServiceBase
     {
 
         private readonly IServiceScopeFactory _scopeFactory;
         protected readonly ILogger _logger;
 
-       public ServiceBase(IServiceScopeFactory scopeFactory, ILogger<NullLogger> logger)
+       public DatabaseServiceBase(IServiceScopeFactory scopeFactory, ILogger<NullLogger> logger)
        {
            _scopeFactory = scopeFactory;
            _logger = logger;

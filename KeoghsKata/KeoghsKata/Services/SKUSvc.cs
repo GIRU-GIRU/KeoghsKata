@@ -5,11 +5,9 @@ using System.Reflection;
 
 namespace KeoghsKata.Services
 {
-    public class SKUSvc : ServiceBase, ISKUSvc
+    public class SKUSvc : DatabaseServiceBase, ISKUSvc
     {
     
-
-
        public SKUSvc(IServiceScopeFactory scopeFactory, ILogger<NullLogger> logger) : base(scopeFactory, logger)
        {
        }
@@ -26,7 +24,25 @@ namespace KeoghsKata.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred in {Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}");
+                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}");
+            }
+
+            return res;
+        }
+
+        public async Task<List<PromotionStoreKeepingUnit>> GetAllPromotions()
+        {
+            List<PromotionStoreKeepingUnit> res = new();
+
+            try
+            {
+                var db = GetContext();
+
+                res = await db.PromotionStoreKeepingUnits.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}");
             }
 
             return res;

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IServiceBase, ServiceBase>();
+builder.Services.AddScoped<IDatabaseServiceBase, DatabaseServiceBase>();
 builder.Services.AddScoped<ISKUSvc, SKUSvc>();
 
 //We don't have a connection string in the appsettings but this is the suggested setup from the ms docs

@@ -2,7 +2,7 @@
 
 namespace KeoghsKata.Services
 {
-    public interface IServiceBase
+    public interface IDatabaseServiceBase
     {
         public DatabaseContext GetContext();
     }

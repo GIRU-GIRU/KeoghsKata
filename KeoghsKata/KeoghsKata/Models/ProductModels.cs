@@ -28,6 +28,7 @@ namespace KeoghsKata.Models
 
     public enum PromotionType
     {
+        None,
         ThreeForForty,
         TwentyFivePrcntOffForEvery2,
     }
