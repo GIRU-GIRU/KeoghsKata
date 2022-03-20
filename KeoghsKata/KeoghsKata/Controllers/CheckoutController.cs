@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace KeoghsKata.Controllers
 {
-    public class HomeController : Controller
+    public class CheckoutController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<CheckoutController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public CheckoutController(ILogger<CheckoutController> logger)
         {
             _logger = logger;
         }
