@@ -9,6 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDatabaseServiceBase, DatabaseServiceBase>();
 builder.Services.AddScoped<ISKUSvc, SKUSvc>();
+builder.Services.AddScoped<IBasketPromotionSvc, BasketPromotionSvc>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMvc().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 
 //We don't have a connection string in the appsettings but this is the suggested setup from the ms docs
 var connectionString = builder.Configuration.GetConnectionString("KeoghsDatabase") ?? "Data Source=KeoghsDatabase.db";
@@ -30,6 +34,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//Added a session for the shopping basket
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

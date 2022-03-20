@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace KeoghsKata.Services
 {
-    public class BasketPromotionSvc : DatabaseServiceBase
+    public class BasketPromotionSvc : DatabaseServiceBase, IBasketPromotionSvc
     {
         private readonly ISKUSvc _skuSvc;
         public BasketPromotionSvc(IServiceScopeFactory scopeFactory, ILogger<NullLogger> logger, ISKUSvc skuSvc) : base(scopeFactory, logger)
@@ -40,13 +40,8 @@ namespace KeoghsKata.Services
         }
 
 
-        /// <summary>
-        /// Takes a list of same store keeping unit types to calculate product discount
-        /// </summary>
-        /// <param name="storeKeepingUnits"></param>
-        /// <returns>a decimal of the new calculated sum total of the list of products</returns>
-        /// <exception cref="ArgumentException"></exception>
-        private async Task<decimal> ApplySameProductDiscount(List<StoreKeepingUnit> storeKeepingUnits)
+        ///<inheritdoc/>
+        public async Task<decimal> ApplySameProductDiscount(List<StoreKeepingUnit> storeKeepingUnits)
         {
             decimal res = 0m;
 
@@ -91,12 +86,11 @@ namespace KeoghsKata.Services
                                 break;
                         }
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occurred applying discounts - {ex.GetBaseException().Message}");
+                _logger.LogError($"An error occurred applying discounts - {ex.GetBaseException().Message}", ex);
             }
 
 

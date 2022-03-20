@@ -4,31 +4,46 @@
     ViewData["Title"] = "Checkout Page";
 }
 
-<h1>CheckoutPage</h1>
+<h1>Checkout Page</h1>
 
 <div>
     <h4>Products</h4>
     <hr />
 
     <div class="row">
-    @foreach (var sku in Model)
-    {
-        <div class="col-md-6 col-lg-4 col-xl-3 pb-3 px-4">
-                <div class="part-1">
-                    <h3>Product @sku.ProductName</h3>
+        @if (Model != null)
+        {
+            @foreach (var sku in Model)
+            {
+                <div class="col-md-6 col-lg-4 col-xl-3 pb-3 px-4">
+                    <div class="part-1">
+                        <h3>Product @sku?.ProductName</h3>
 
-                    <div class="row">
-                        <button type="button" class="btn btn-success">Add to cart</button>
+                        <div class="row">
+                            <button onclick=" location.href='@Url.Action("Test", "Checkout", new { Id = sku?.Id })' "
+                            type="button"
+                            class="btn btn-success">
+                                Add to cart
+                            </button>
+                        </div>
+                        
+                        <div class="row">
                         <button type="button" class="btn btn-danger">Remove from cart</button>
+                        </div>
 
                     </div>
+                    <div>
+                        <h4>£@sku?.UnitPrice</h4>
+                    </div>
                 </div>
-                <div>
-                    <h4>£@sku.UnitPrice</h4>
-                </div>
-        </div>
-    }
+            }
+        }
     </div>
+
+    <div class="col-md-6 col-lg-4 col-xl-3 pb-3 pt-4">
+        @await Component.InvokeAsync("Basket")
+    </div>
+
 
 </div>
 

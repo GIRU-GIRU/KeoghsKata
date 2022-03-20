@@ -24,7 +24,7 @@ namespace KeoghsKata.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}");
+                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}", ex);
             }
 
             return res;
@@ -42,7 +42,7 @@ namespace KeoghsKata.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}");
+                _logger.LogError($"{Utilities.GetCurrentMethodName()} - {ex.GetBaseException().Message}", ex);
             }
 
             return res;

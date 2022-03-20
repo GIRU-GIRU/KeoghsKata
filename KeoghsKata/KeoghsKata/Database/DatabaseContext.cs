@@ -17,7 +17,7 @@ namespace KeoghsKata.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //A database is not required for this kata, but i thought i would make use of it to also learn the EF6 minimal API setup with EF core as this is all new to me
+            //A database is not required for this kata, but i thought i would make use of it to also learn the .net core 6 minimal API setup with EF core 6 as this is all new to me
             modelBuilder.Entity<PromotionStoreKeepingUnit>().HasOne(x => x.StoreKeepingUnit);
 
             modelBuilder.Entity<StoreKeepingUnit>().HasData(

@@ -1,0 +1,39 @@
+﻿@model List<BasketModel>
+
+<h3>Basket</h3>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Promotions Applied</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var basketModel in Model)
+            {
+                <tr>
+                    <td>@basketModel?.StoreKeepingUnit?.ProductName</td>
+                    <td>@basketModel?.Quantity</td>
+                    <td>£@basketModel?.TotalPrice</td>
+                    <td></td>
+                </tr>
+            }       
+
+        </tbody>
+    </table>
+}else
+{
+    <p>Basket is currently empty</p>
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
